@@ -12,8 +12,8 @@ body {
 }
 
 #map-container {
-    position: relative;
-    width: 100vw;
+    position: relative; /* Position relative to allow absolute positioning of children */
+    width:  auto; /* Adjust based on how you want to handle the map size */
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -21,6 +21,8 @@ body {
 }
 
 #map {
+    width: 100%; /* Adjust based on how you want to handle the map size */
+    height: auto; /* Keep aspect ratio */
     max-width: 100vw;
     max-height: 100vh;
     object-fit: contain;
@@ -42,11 +44,14 @@ body {
     margin: 10px 0;
     border: 2px solid #ba3a46;
     background-color: transparent; /* Empty background */
-    cursor: pointer;
-    display: flex; /* Enable flexbox for centering */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    overflow: hidden; /* Prevent overflow of child elements */
+    display: inline-block;
+    position: relative;
+    background-size: cover; /* Ensures the image covers the slot */
+    background-position: center; /* Centers the image */
+}
+
+.agent-slot:hover {
+    border-color: #ffffff; /* Optional: highlight on hover */
 }
 
 .agent {
@@ -67,4 +72,10 @@ body {
     top: 50px; /* Adjust this value to position vertically */
     left: 150px; /* Adjust this value to position closer to the agent slots */
     transform: none; /* Remove the translation to prevent centering */
+}
+
+#slot-0 {
+    position: relative;
+    left: 0;
+    top: 0;
 }

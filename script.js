@@ -1,4 +1,5 @@
 let selectedSlot = null;
+let offsetX, offsetY; // Global variables for offset
 
 const agents = [
     { name: 'Astra', path: 'images/agents/controllers/astra.webp' },
@@ -28,10 +29,27 @@ const agents = [
     { name: 'Vyse', path: 'images/agents/sentinels/vyse.webp' },
 ];
 
-// Call the function when the page loads or when you want to show the menu
-window.onload = init();
+// Allow drop on the body
+document.body.addEventListener('dragover', event => {
+    event.preventDefault(); // Prevent default to allow drop
+});
 
-function init() {
+// Handle drop event on the body
+document.body.addEventListener('drop', event => {
+    event.preventDefault(); // Prevent default action
+    const id = event.dataTransfer.getData('text/plain'); // Get the ID of the dragged element
+    const draggableElement = document.getElementById(id);
+    
+    // Position the dragged element at the drop location
+    if (draggableElement) {
+        draggableElement.style.position = 'absolute'; // Ensure the position is absolute
+        draggableElement.style.left = `${event.clientX - offsetX - 50}px`; // Set left position based on cursor position
+        draggableElement.style.top = `${event.clientY - offsetY - 60}px`; // Set top position based on cursor position
+    }
+});
+
+// Call the function when the page loads or when you want to show the menu
+window.onload = () => {
     const agentSelectionDiv = document.getElementById('agent-selection');
 
     agents.forEach(agent => {
@@ -42,12 +60,20 @@ function init() {
         img.onclick = () => selectAgent(agent.path, agent.name);
         agentSelectionDiv.appendChild(img);
     });
+
+    // Add event listeners to the agent slots for drag functionality
+    const agentSlots = document.querySelectorAll('.agent-slot');
+    agentSlots.forEach(slot => {
+        slot.addEventListener('dragstart', dragStart);
+        slot.addEventListener('dragend', dragEnd);
+        slot.setAttribute('draggable', 'true'); // Ensure each slot is draggable
+    });
 }
 
 // Opens the agent selection menu
 function openAgentSelection(slotIndex) {
     const agentSelectionDiv = document.getElementById('agent-selection');
-    
+
     // Check if the same slot is clicked again
     if (selectedSlot === slotIndex && !agentSelectionDiv.classList.contains('hidden')) {
         closeAgentSelection();
@@ -60,11 +86,27 @@ function openAgentSelection(slotIndex) {
 // Handles agent selection and fills the slot with the selected agent
 function selectAgent(path, name) {
     const slot = document.getElementById(`slot-${selectedSlot}`);
-    slot.innerHTML = `<img src="${path}" alt="${name}" class="agent">`;
+    slot.style.backgroundImage = `url(${path})`; // Set background image
+    slot.style.backgroundColor = `#ba3a46`
     closeAgentSelection();
 }
-
 // Closes the agent selection menu
 function closeAgentSelection() {
     document.getElementById('agent-selection').classList.add('hidden');
+}
+
+// Handle drag start event
+function dragStart(event) {
+    // Store the offset
+    const draggableElement = event.target;
+    offsetX = event.clientX - draggableElement.getBoundingClientRect().left;
+    offsetY = event.clientY - draggableElement.getBoundingClientRect().top;
+    
+    event.dataTransfer.setData('text/plain', draggableElement.id); // Store the ID of the dragged element
+}
+
+// Function to handle drag end
+function dragEnd(event) {
+    console.log('Drag ended for:', event.target.id);
+    event.target.style.opacity = ''; // Reset opacity when drag ends
 }
