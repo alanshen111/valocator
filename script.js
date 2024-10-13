@@ -1,5 +1,12 @@
 let selectedSlot = null;
+let selectedMap = null;
+let currentRole = 'Attacker'; // To track the current role
 let offsetX, offsetY; // Global variables for offset
+
+const maps = [
+    { name: 'Bind', minimap_path: 'images/maps/minimaps/bind.webp', artwork_path: 'images/maps/artworks/bind.webp' },
+    { name: 'Breeze', minimap_path: 'images/maps/minimaps/breeze.webp', artwork_path: 'images/maps/artworks/breeze.webp' },
+];
 
 const agents = [
     { name: 'Astra', path: 'images/agents/controllers/astra.webp' },
@@ -34,6 +41,8 @@ document.body.addEventListener('dragover', event => {
     event.preventDefault(); // Prevent default to allow drop
 });
 
+document.getElementById('map').addEventListener('click', openMapSelection);
+
 // Handle drop event on the body
 document.body.addEventListener('drop', event => {
     event.preventDefault(); // Prevent default action
@@ -43,8 +52,8 @@ document.body.addEventListener('drop', event => {
     // Position the dragged element at the drop location
     if (draggableElement) {
         draggableElement.style.position = 'absolute'; // Ensure the position is absolute
-        draggableElement.style.left = `${event.clientX - offsetX - 50}px`; // Set left position based on cursor position
-        draggableElement.style.top = `${event.clientY - offsetY - 60}px`; // Set top position based on cursor position
+        draggableElement.style.left = `${event.clientX - offsetX - 30}px`; // Set left position based on cursor position
+        draggableElement.style.top = `${event.clientY - offsetY - 40}px`; // Set top position based on cursor position
     }
 });
 
@@ -83,6 +92,62 @@ function openAgentSelection(slotIndex) {
     }
 }
 
+// Function to open the map selection menu
+function openMapSelection(event) {
+    const mapSelectionDiv = document.getElementById('map-selection');
+    const roleSwapDiv = document.getElementById('role-swap');
+
+    // Initialize the role swap images
+    const attackerImage = document.createElement('img');
+    const defenderImage = document.createElement('img');
+    
+    attackerImage.src = 'images/attacker.webp';
+    attackerImage.alt = 'Attacker';
+    attackerImage.id = 'attacker-image';
+    attackerImage.onclick = () => swapRole();
+    defenderImage.src = 'images/defender.webp';
+    defenderImage.alt = 'Defender';
+    defenderImage.id = 'defender-image';
+    defenderImage.onclick = () => swapRole();
+    
+    if (currentRole === 'Defender') {
+        attackerImage.style.display = 'none'; // Hide attacker image
+    } else {
+        defenderImage.style.display = 'none'; // Hide defender image
+    }
+    
+    roleSwapDiv.appendChild(attackerImage);
+    roleSwapDiv.appendChild(defenderImage);
+
+    // Position the map selection menu in the bottom left corner
+    mapSelectionDiv.style.left = '10px'; // Set to your desired padding
+    mapSelectionDiv.style.bottom = '10px'; // Set to your desired padding
+
+    // Toggle visibility based on current selection
+    if (selectedMap && !mapSelectionDiv.classList.contains('hidden')) {
+        closeMapSelection();
+    } else {
+        mapSelectionDiv.classList.remove('hidden');
+
+        // Clear previous images
+        mapSelectionDiv.innerHTML = '';
+
+        // Append role swap images
+        roleSwapDiv.id = 'role-swap';
+        mapSelectionDiv.appendChild(roleSwapDiv);
+        
+        // Append map images to the selection menu
+        maps.forEach(map => {
+            const img = document.createElement('img');
+            img.src = map.artwork_path;
+            img.alt = map.name;
+            img.onclick = () => selectMap(map.minimap_path, map.name); // Handle selection
+            mapSelectionDiv.appendChild(img);
+        });
+        selectedMap = true; // Set selectedMap to true to indicate the menu is open
+    }
+}
+
 // Handles agent selection and fills the slot with the selected agent
 function selectAgent(path, name) {
     const slot = document.getElementById(`slot-${selectedSlot}`);
@@ -90,6 +155,7 @@ function selectAgent(path, name) {
     slot.style.backgroundColor = `#ba3a46`
     closeAgentSelection();
 }
+
 // Closes the agent selection menu
 function closeAgentSelection() {
     document.getElementById('agent-selection').classList.add('hidden');
@@ -109,4 +175,52 @@ function dragStart(event) {
 function dragEnd(event) {
     console.log('Drag ended for:', event.target.id);
     event.target.style.opacity = ''; // Reset opacity when drag ends
+}
+
+// Function to handle map selection
+function selectMap(path, name) {
+    selectedMap = name; // Store the name of the selected map
+    const mapImg = document.getElementById('map');
+    mapImg.src = path; // Change the map image source
+
+    // Flip the map image upside down if the current role is Defender
+    if (currentRole === 'Defender') {
+        mapImg.style.transform = 'rotate(180deg)'; // Apply rotation
+    } else {
+        mapImg.style.transform = 'none'; // Reset transformation for other roles
+    }
+
+    closeMapSelection(); // Close the map selection menu
+}
+// Function to close the map selection menu
+function closeMapSelection() {
+    const mapSelectionDiv = document.getElementById('map-selection');
+    mapSelectionDiv.classList.add('hidden');
+    const roleSwapDiv = document.getElementById('role-swap');
+    roleSwapDiv.innerHTML = ''; // Clear the role swap images
+    selectedMap = false; // Set selectedMap to false to indicate the menu is closed
+}
+
+function swapRole() {
+    const attackerImage = document.getElementById('attacker-image');
+    const defenderImage = document.getElementById('defender-image');
+    const mapImg = document.getElementById('map'); // Get the map image element
+
+    // Swap roles and update visibility of images
+    if (currentRole === 'Attacker') {
+        currentRole = 'Defender';
+        attackerImage.style.display = 'none'; // Hide attacker image
+        defenderImage.style.display = 'block'; // Show defender image
+    } else {
+        currentRole = 'Attacker';
+        defenderImage.style.display = 'none'; // Hide defender image
+        attackerImage.style.display = 'block'; // Show attacker image
+    }
+
+    // Immediately flip the map image based on the current role
+    if (currentRole === 'Defender') {
+        mapImg.style.transform = 'rotate(180deg)'; // Flip upside down
+    } else {
+        mapImg.style.transform = 'none'; // Reset transformation for Attacker
+    }
 }

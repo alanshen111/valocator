@@ -8,19 +8,19 @@
 </head>
 <body>
 
-    <div id="map-container">
-        <img id="map" src="images/maps/bind.webp" alt="Bind">
-        <div id="agent-icons">
-            <div class="agent-slot" onclick="openAgentSelection(0)" id="slot-0"></div>
-            <div class="agent-slot" onclick="openAgentSelection(1)" id="slot-1"></div>
-            <div class="agent-slot" onclick="openAgentSelection(2)" id="slot-2"></div>
-            <div class="agent-slot" onclick="openAgentSelection(3)" id="slot-3"></div>
-            <div class="agent-slot" onclick="openAgentSelection(4)" id="slot-4"></div>
-        </div>
+    <img id="map" src="images/maps/minimaps/bind.webp" alt="Bind">
+    <div id="agent-icons">
+        <div class="agent-slot" onclick="openAgentSelection(0)" id="slot-0"></div>
+        <div class="agent-slot" onclick="openAgentSelection(1)" id="slot-1"></div>
+        <div class="agent-slot" onclick="openAgentSelection(2)" id="slot-2"></div>
+        <div class="agent-slot" onclick="openAgentSelection(3)" id="slot-3"></div>
+        <div class="agent-slot" onclick="openAgentSelection(4)" id="slot-4"></div>
     </div>
 
-    <!-- Hidden agent selection menu -->
+    <!-- Hidden menu -->
     <div id="agent-selection" class="hidden"></div>
+    <div id="map-selection" class="hidden"></div>
+    <div id="role-swap" class="hidden"></div>
 
     <script src="script.js"></script>
 </body>
