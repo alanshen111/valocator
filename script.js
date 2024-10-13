@@ -13,7 +13,19 @@ const agents = [
     { name: 'Phoenix', path: 'images/agents/duelists/phoenix.webp' },
     { name: 'Raze', path: 'images/agents/duelists/raze.webp' },
     { name: 'Reyna', path: 'images/agents/duelists/reyna.webp' },
-    { name: 'Yoru', path: 'images/agents/duelists/yoru.webp' }
+    { name: 'Yoru', path: 'images/agents/duelists/yoru.webp' },
+    { name: 'Breach', path: 'images/agents/initiators/breach.webp' },
+    { name: 'Fade', path: 'images/agents/initiators/fade.webp' },
+    { name: 'Gekko', path: 'images/agents/initiators/gekko.webp' },
+    { name: 'Kayo', path: 'images/agents/initiators/kayo.webp' },
+    { name: 'Skye', path: 'images/agents/initiators/skye.webp' },
+    { name: 'Sova', path: 'images/agents/initiators/sova.webp' },
+    { name: 'Chamber', path: 'images/agents/sentinels/chamber.webp' },
+    { name: 'Cypher', path: 'images/agents/sentinels/cypher.webp' },
+    { name: 'Deadlock', path: 'images/agents/sentinels/deadlock.webp' },
+    { name: 'Killjoy', path: 'images/agents/sentinels/killjoy.webp' },
+    { name: 'Sage', path: 'images/agents/sentinels/sage.webp' },
+    { name: 'Vyse', path: 'images/agents/sentinels/vyse.webp' },
 ];
 
 // Call the function when the page loads or when you want to show the menu
@@ -34,9 +46,15 @@ function init() {
 
 // Opens the agent selection menu
 function openAgentSelection(slotIndex) {
-    selectedSlot = slotIndex;
-
-    document.getElementById('agent-selection').classList.remove('hidden');
+    const agentSelectionDiv = document.getElementById('agent-selection');
+    
+    // Check if the same slot is clicked again
+    if (selectedSlot === slotIndex && !agentSelectionDiv.classList.contains('hidden')) {
+        closeAgentSelection();
+    } else {
+        selectedSlot = slotIndex;
+        agentSelectionDiv.classList.remove('hidden');
+    }
 }
 
 // Handles agent selection and fills the slot with the selected agent

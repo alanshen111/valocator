@@ -64,7 +64,7 @@ body {
 
 #agent-selection {
     position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Fix the transformation for centering */
+    top: 50px; /* Adjust this value to position vertically */
+    left: 150px; /* Adjust this value to position closer to the agent slots */
+    transform: none; /* Remove the translation to prevent centering */
 }
