@@ -4,8 +4,17 @@ let currentRole = 'Attacker'; // To track the current role
 let offsetX, offsetY; // Global variables for offset
 
 const maps = [
+    { name: 'Abyss', minimap_path: 'images/maps/minimaps/abyss.webp', artwork_path: 'images/maps/artworks/abyss.webp' },
+    { name: 'Ascent', minimap_path: 'images/maps/minimaps/ascent.webp', artwork_path: 'images/maps/artworks/ascent.webp' },
     { name: 'Bind', minimap_path: 'images/maps/minimaps/bind.webp', artwork_path: 'images/maps/artworks/bind.webp' },
     { name: 'Breeze', minimap_path: 'images/maps/minimaps/breeze.webp', artwork_path: 'images/maps/artworks/breeze.webp' },
+    { name: 'Fracture', minimap_path: 'images/maps/minimaps/fracture.webp', artwork_path: 'images/maps/artworks/fracture.webp' },
+    { name: 'Haven', minimap_path: 'images/maps/minimaps/haven.webp', artwork_path: 'images/maps/artworks/haven.webp' },
+    { name: 'Icebox', minimap_path: 'images/maps/minimaps/icebox.webp', artwork_path: 'images/maps/artworks/icebox.webp' },
+    { name: 'Lotus', minimap_path: 'images/maps/minimaps/lotus.webp', artwork_path: 'images/maps/artworks/lotus.webp' },
+    { name: 'Pearl', minimap_path: 'images/maps/minimaps/pearl.webp', artwork_path: 'images/maps/artworks/pearl.webp' },
+    { name: 'Split', minimap_path: 'images/maps/minimaps/split.webp', artwork_path: 'images/maps/artworks/split.webp' },
+    { name: 'Sunset', minimap_path: 'images/maps/minimaps/sunset.webp', artwork_path: 'images/maps/artworks/sunset.webp' },
 ];
 
 const agents = [
@@ -118,10 +127,6 @@ function openMapSelection(event) {
     
     roleSwapDiv.appendChild(attackerImage);
     roleSwapDiv.appendChild(defenderImage);
-
-    // Position the map selection menu in the bottom left corner
-    mapSelectionDiv.style.left = '10px'; // Set to your desired padding
-    mapSelectionDiv.style.bottom = '10px'; // Set to your desired padding
 
     // Toggle visibility based on current selection
     if (selectedMap && !mapSelectionDiv.classList.contains('hidden')) {

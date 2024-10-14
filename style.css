@@ -22,14 +22,14 @@ body {
 
 #map-selection {
     position: fixed;
-    bottom: 5vb;
-    left: 5vb; 
+    top: 2vh;
+    right: 1vw;
     max-width: 300px; /* Set a max width for the menu */
     z-index: 1000; /* Ensure it appears above other elements */
 }
 
 #map-selection img {
-    width: 100px; /* Width for each map image */
+    width: 5vw; /* Width for each map image */
     height: auto; /* Maintain aspect ratio */
     margin: 5px; /* Space between images */
     cursor: pointer; /* Show pointer on hover */
